@@ -32,7 +32,11 @@ With blank public Supabase values, cloud controls explain that configuration is 
 2. Deploy `supabase/functions/mathquest-api/index.ts` as `mathquest-api`; bundle its adjacent `curriculum.ts`, `generators.ts`, and `types.ts`.
 3. Supabase supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to the Edge Function. Do not put the service-role key in browser configuration.
 4. Confirm the Auth redirect URL is allowed for the hosted origin so password recovery returns to the app. The app recognizes a `type=recovery` deep link and the Supabase `PASSWORD_RECOVERY` event.
-5. Verify SQL/RLS/RPC behavior, Edge deployment, real email/reset flow, deletion, and cloud progress using a real project before release. None were exercised in this local-only repair.
+5. Verify SQL/RLS/RPC behavior, Edge deployment, real email/reset flow, deletion, and cloud progress using a real project before release.
+
+### Deployment status — 2026-09-16
+
+The MathQuest migration and `mathquest-api` version 1 are deployed to the selected Supabase project. Database RLS/privileges and rollback-only tests for issuance, ordered hints, cross-owner rejection, exact-once rewards/replays, and deletion cascade passed. Signup supplies fixed `student` metadata for the project's existing user-creation trigger. Frontend hosting configuration, live Auth/email recovery, and authenticated browser-to-Edge progress tests remain pending. No live website release is claimed yet.
 
 ## API contract
 

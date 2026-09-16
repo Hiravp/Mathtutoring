@@ -18,7 +18,17 @@ Date: 2026-09-14
 - SQL mutation functions revoke public/anon/authenticated execution and explicitly grant `service_role`. Hint and reward accounting use the locked question's `hint_count`.
 - Issuance budget records advisory-lock-protected 24-hour reservations in `mq_issue_budgets`, independent of attempts. JSON object/UUID/integer validation is strict. Export is explicitly bounded to 1,000 rows per collection.
 
-## Not verified locally
+## Backend deployment verification — 2026-09-16
+
+- Additive migration `001_mathquest` applied, database version `20260916021141`.
+- `mathquest-api` version 1 is ACTIVE with gateway JWT verification enabled and in-handler bearer verification retained.
+- All six MathQuest tables have RLS; all four mutation routines are executable only by `service_role`.
+- Rollback-only database tests passed issuance reservation, ordered hints, cross-owner rejection, exact-once rewards/replays, and auth deletion cascade. No persistent test users or existing user data were changed.
+- The `me` endpoint now uses exact attempt/correct counts instead of counting a default-limited row page.
+- Existing auth trigger requires a `student` or `teacher` role. Frontend signup now sends fixed `student` metadata, with no additional PII or role picker. Typecheck, production build, and existing generator/security tests passed again after this compatibility change.
+- Vercel configuration and external real Auth/email/reset/browser-to-Edge tests are still pending; database verification is not an end-to-end website test.
+
+## Historical limitations at the original local QA date
 
 PostgreSQL/Supabase migration execution, RLS policy behavior, RPC grants, Edge deployment/bundling, email delivery, recovery links in a real Supabase session, live account deletion, and live adaptive difficulty were **not** tested against a Supabase project. They remain deployment blockers; apply and verify the migration and deploy the Edge Function before enabling cloud mode.
 
